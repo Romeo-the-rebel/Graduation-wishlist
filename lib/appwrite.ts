@@ -1,5 +1,4 @@
 import { Account, Client, Databases, ID, Query, Storage } from "appwrite";
-import bcrypt from 'bcryptjs';
 import type { Models } from 'appwrite'; 
 
 
@@ -35,11 +34,7 @@ const databases = new Databases(client);
 const storage = new Storage(client);
 
 
-const hashPassword = (password: string) => {
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
-    return hash;
-};
+
 
 //  1. Get currently authenticated user (basic Appwrite info)
 const getCurrentUser = async (): Promise<Models.User<Models.Preferences> | null> => {
@@ -265,7 +260,6 @@ export {
     account,
     databases,
     storage,
-    hashPassword,
     getCurrentUser,
     getUserProfile,
     uploadProfilePicture,
