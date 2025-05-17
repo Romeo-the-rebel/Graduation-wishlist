@@ -165,19 +165,19 @@ const handleRouteChange = (path: string) => {
 
         {/* Menu Links */}
         <div className={`flex-col sm:flex-row sm:flex ${menuOpen ? 'flex' : 'hidden'} sm:items-center gap-4 absolute sm:static bg-gray-800 sm:bg-transparent left-0 right-0 top-[64px] sm:top-auto p-4 sm:p-0 z-10`}>
-          
-          <button
-            className="hover:text-blue-400 transition"
-          >
-            <a href="https://www.backabuddy.co.za/campaign/graduation~15" target="_blank">Donate</a>
-            
-          </button>
-          <button
+        <button
             className="hover:text-blue-400 transition"
             onClick={() => handleRouteChange('/receipts')}
           >
             My Gifts
           </button>
+          <button
+            className="bg-blue-700 rounded-2xl p-3 hover:text-blue-400 transition"
+          >
+            <a href="https://www.backabuddy.co.za/campaign/graduation~15" target="_blank">Donate</a>
+            
+          </button>
+          
         </div>
       </div>
     </nav>
@@ -270,6 +270,23 @@ const handleRouteChange = (path: string) => {
               Price: R{gift.price.toFixed(2)}
             </p>
           </div>
+          <a href={gift.link} target="_blank" rel="noopener noreferrer" className="items-center p-2 rounded text-xs md:text-base transition">
+          <button
+            disabled={!gift.available}
+            className={`mt-3 p-2 rounded text-xs md:text-base transition ${
+              gift.available
+                ? selectedGifts.includes(gift.id)
+                  ? "bg-green-500 text-white hover:bg-green-600"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+                : "bg-gray-400 text-white cursor-not-allowed"
+            }`}
+          >
+            Redirect to Site
+           
+          
+            
+          </button>
+          </a>
 
           <button
             onClick={() => handleSelectGift(gift.id)}
