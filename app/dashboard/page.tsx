@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getGifts, getUserDetailsById, makeUnavailable, createSelectedGift } from "@/lib/appwrite"; 
 import { useUser } from "@/app/context/UserContext"; 
 import {DatePicker} from "@heroui/date-picker";
-
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 type Gift = {
@@ -31,7 +31,7 @@ const DashboardPage = () => {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true); 
-
+  const [profilepicture, setProfilePicture] = useState<string | null>(null);
   useEffect(() => {
     const fetchGifts = async () => {
       setGiftsLoading(true); 
@@ -51,6 +51,7 @@ const DashboardPage = () => {
         try {
           const fetchedUser = await getUserDetailsById(user.$id);
           setUserDetails(fetchedUser); 
+          setProfilePicture("https://fra.cloud.appwrite.io/v1/storage/buckets/68098ae3002784ce9cc4/files/"+fetchedUser.profilepicture+"/preview?project=68095cf0003cb28f3a6d&mode=admin");
         } catch (err) {
           console.error('Error fetching user details:', err);
         } finally {
@@ -125,11 +126,21 @@ const handleRouteChange = (path: string) => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo / App Name */}
         <div className="flex items-center gap-3">
-        <img
-             src={`https://fra.cloud.appwrite.io/v1/storage/buckets/68098ae3002784ce9cc4/files/${userDetails.profilepicture}/preview?project=68095cf0003cb28f3a6d&mode=admin`} // fallback image if no profile pic
-            alt="Profile"
+       
+          {/* display image using next/image */}
+          {/* <Image
+            
+            
+            width={100}
+            height={100}
             className="w-10 h-10 rounded-full object-cover"
-          />
+          /> */}
+          <img
+              src={`https://fra.cloud.appwrite.io/v1/storage/buckets/68098ae3002784ce9cc4/files/${userDetails.profilepicture}/preview?project=68095cf0003cb28f3a6d&mode=admin` || "/default-avatar.png"}
+               alt="Logo"
+            className="w-10 h-10 rounded-full object-cover"
+            />
+
            <span className="font-semibold text-sm md:text-base">{userDetails.name||user?.username || "User"}</span>
            
          </div>
@@ -265,6 +276,16 @@ const handleRouteChange = (path: string) => {
               alt={gift.name}
               className="w-full h-[140px] md:h-[180px] object-cover rounded"
             />
+            {/* <Image
+              src={
+                userDetails?.profilepicture
+                  ? `https://fra.cloud.appwrite.io/v1/storage/buckets/68098ae3002784ce9cc4/files/${gift.imageId}/preview?project=68095cf0003cb28f3a6d&mode=admin`
+                  : "/default-avatar.png" // fallback image
+              }              alt={gift.name}
+              width={200}
+              height={300}
+              className="w-full h-[140px] md:h-[180px] object-cover rounded"
+            /> */}
             <h3 className="text-base md:text-lg font-bold mt-2 truncate">{gift.name}</h3>
             <p className="text-xs md:text-sm text-gray-600 mt-1">
               Price: R{gift.price.toFixed(2)}
